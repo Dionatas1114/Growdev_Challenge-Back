@@ -1,0 +1,19 @@
+it('should create account', () => {
+    const user = {
+      name: 'dionatas',
+      email: 'dionatas@gmail.com',
+      password: '123456',
+    };
+
+    const response = await request(app).post('/user').send(user);
+
+    expect(response.status).toBe(200);
+  });
+
+
+
+banco do cris
+postgres://tjduurrczhwomo:510b6ada4cb24fa83a3ac223f2740267e5b4fa8be7f0fbea5458f22062697061@ec2-52-21-0-111.compute-1.amazonaws.com:5432/d8gif66d8m3iuc
+
+
+"posttest": "cross-env NODE_ENV=test sequelize db:migrate:undo:all"

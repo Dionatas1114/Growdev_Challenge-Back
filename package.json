@@ -1,0 +1,43 @@
+{
+  "name": "Desafio-FullStack-Back",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "devDependencies": {
+    "@sucrase/jest-plugin": "^2.0.0",
+    "@types/jest": "^26.0.14",
+    "cross-env": "^7.0.2",
+    "eslint": "^7.10.0",
+    "eslint-config-airbnb-base": "^14.2.0",
+    "eslint-config-prettier": "^6.12.0",
+    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-jest": "^24.1.0",
+    "eslint-plugin-prettier": "^3.1.4",
+    "faker": "^5.1.0",
+    "jest": "^26.5.2",
+    "nodemon": "^2.0.4",
+    "prettier": "^2.1.2",
+    "sequelize-cli": "^6.2.0",
+    "sqlite3": "^5.0.0",
+    "sucrase": "^3.15.0",
+    "supertest": "^5.0.0"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "jsonwebtoken": "^8.5.1",
+    "pg": "^8.4.0",
+    "pg-hstore": "^2.3.3",
+    "sequelize": "^6.3.5"
+  },
+  "scripts": {
+    "pretest": "cross-env NODE_ENV=test sequelize db:migrate",
+    "test": "jest",
+    "posttest": "cross-env NODE_ENV=test sequelize db:migrate:undo:all",
+    "dev": "nodemon src/server.js",
+    "dev:debug": "nodemon --inspect src/server.js"
+  }
+}
+
