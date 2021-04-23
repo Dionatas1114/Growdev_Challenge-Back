@@ -26,7 +26,7 @@ class AuthController {
         });
       }
 
-      const { uid, name } = user;
+      const { uid, name, type } = user;
 
       return res.json({
         success: true,
@@ -34,6 +34,7 @@ class AuthController {
           uid,
           name,
           email,
+          type,
         },
         token: jwt.sign({ uid }, authConfig.secret, {
           expiresIn: authConfig.expiresIn,
