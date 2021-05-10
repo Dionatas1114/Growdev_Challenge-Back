@@ -2,22 +2,34 @@
 
 This API is part of the Course Conclusion Work of the [Growdev Starter Program](https://www.dropbox.com/s/qea757td5p7zust/certificado.pdf?dl=0) and was developed in January 2021 to test students skills in Node.
 
-## About this API
-
-* `Growdev_Challenge_API` is a REST API built on `Node.js` and `Express.js` that integrates with the `Postgres` database through `sequelize` (ORM). The database is configured and active, so you can use it. I just ask you not to delete the data in it.
-
-* The access control follows `Bearer Token` spec with the help of `Jsonwebtoken` and `Bcryptjs`.
-
 ## Overview
 
-This API contains models
+1. **Attention**: The database is configured and active, so you can use it. I just ask you not to delete the data in it.
+
+2. **About this API**: `Growdev_Challenge_API` is a REST API built on `Node.js` and `Express.js` that integrates with the `Postgres` database through `sequelize` (ORM). The access control follows `Bearer Token` spec with the help of `Jsonwebtoken` and `Bcryptjs`.
+
+3. **Content and structure**: This API contains models
+* Models:
+  1.User
+  2.Class
+  3.Growdever
+  4.ClassUser
+* Controllers
+  1.UserController
+  2.ClassController
+  3.AuthController
+  4.GrowdeverController
+* Middleware: auth
+* routes: public and private
+* database Postgress
 
 ## How to use
 
-To test this API in a REST Client aplication, [download the JSON file](https://www.dropbox.com/s/aiqlov2c5629fd4/Desafio-FullStack-Growdev-BACK.postman_collection.json?dl=0) and import.
+To test this API in a REST Client aplication, 
+[download the JSON file](https://www.dropbox.com/s/aiqlov2c5629fd4/Desafio-FullStack-Growdev-BACK.postman_collection.json?dl=0) 
+and import.
 
 ### Run server as **dev** and **debug**
-
 ```sh
 npm dev
 # alias for
@@ -52,7 +64,6 @@ cross-env NODE_ENV=test sequelize db:migrate:undo:all
 ```
 
 ### Modules used
-
 *devDependencies*
 
 * [nodemon](https://www.npmjs.com/package/nodemon)
@@ -79,14 +90,23 @@ cross-env NODE_ENV=test sequelize db:migrate:undo:all
 * [pg](https://www.npmjs.com/package/pg)
 * [pg-hstore](https://www.npmjs.com/package/pg-hstore)
 
-## Features to be developed
+## What I practiced on this API
 
-1. Unitary and integration tests with `jest`.
+1.creation of the models with data and their respective types
+2.creation of the controllers with CRUD methods and http codes
+3.creation of the public and private routes
+4.creation of the migrations
+5.creation of the middleware (auth)
+6.configuration of the `Postgres` database and token (expire in)
+7.configuration of the `sqlite` to save the tests coverage
+
+## Features to be developed
+1. Utils and messages
+2. Validators with `Yup`
+3. Unitary and integration tests with `Jest`
 
 ## Author
-
 Created and maintained by [Diônatas Batista Lazzari](https://www.linkedin.com/in/dionatas-lazzari-dev/).
 
 ## License
-
 `Growdev_Challenge-Back` is available under the MIT license.
