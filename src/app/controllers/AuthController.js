@@ -1,7 +1,8 @@
 import jwt from 'jsonwebtoken';
-import User from '../models/User';
 
+import User from '../models/User';
 import authConfig from '../../config/auth';
+import ApiResult from '../utils/ApiResult';
 
 class AuthController {
   async store(req, res) {
@@ -15,21 +16,20 @@ class AuthController {
       });
 
       if (!user) {
-        return res.status(401).json({
-          error: 'Usuario não encontrado',
-        });
+        const response = ApiResult.parseError(false, 'incorrectUser');
+        return res.status(ApiResult.UNAUTHORIZED).json(response);
       }
 
       if (!(await user.checkPassword(password))) {
-        return res.status(401).json({
-          error: 'Senha incorreta',
-        });
+        const response = ApiResult.parseError(false, 'incorrectPassw');
+        return res.status(ApiResult.UNAUTHORIZED).json(response);
       }
 
       const { uid, name, type } = user;
 
-      return res.json({
+      return res.status(ApiResult.OK).json({
         success: true,
+        message: 'Login realizado com sucesso', // TODO usar 'loginSuccess' de SuccessCodes
         user: {
           uid,
           name,
@@ -41,10 +41,8 @@ class AuthController {
         }),
       });
     } catch (error) {
-      return res.json({
-        success: false,
-        error: 'Não foi possível realizar o login. Por favor, tente novamente.',
-      });
+      const response = ApiResult.parseError(false, 'authLogin', error.message);
+      return res.status(ApiResult.NOT_FOUND).json(response);
     }
   }
 }

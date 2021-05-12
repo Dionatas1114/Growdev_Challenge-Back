@@ -1,14 +1,14 @@
 import Growdever from '../models/Growdever';
 import User from '../models/User';
+import ApiResult from '../utils/ApiResult';
 
 class UserController {
   async index(req, res) {
     try {
       const { type } = req.body;
       if (type !== 1) {
-        return res.status(401).json({
-          error: 'Você não possui credenciais de administrador',
-        });
+        const response = ApiResult.parseError(false, 'userUnauth');
+        return res.status(ApiResult.UNAUTHORIZED).json(response);
       }
 
       const users = await User.findAll({
@@ -21,15 +21,12 @@ class UserController {
           },
         ],
       });
-      return res.status(200).json({
-        success: true,
-        users,
-      });
+
+      const response = ApiResult.parseResult(true, { users }, 'userIndex');
+      return res.status(ApiResult.OK).json(response);
     } catch (error) {
-      return res.status(400).json({
-        success: false,
-        error,
-      });
+      const response = ApiResult.parseError(false, 'userIndex', error.message);
+      return res.status(ApiResult.NOT_FOUND).json(response);
     }
   }
 
@@ -48,19 +45,15 @@ class UserController {
       });
 
       if (!user) {
-        return res.status(400).json({
-          error: 'Usuário não encontrado',
-        });
+        const response = ApiResult.parseError(false, 'incorrectUser');
+        return res.status(ApiResult.NOT_FOUND).json(response);
       }
-      return res.status(200).json({
-        success: true,
-        user,
-      });
+
+      const response = ApiResult.parseResult(true, { users }, 'userShow');
+      return res.status(ApiResult.OK).json(response);
     } catch (error) {
-      return res.status(400).json({
-        success: false,
-        error,
-      });
+      const response = ApiResult.parseError(false, 'userShow', error.message);
+      return res.status(ApiResult.NOT_FOUND).json(response);
     }
   }
 
@@ -74,28 +67,21 @@ class UserController {
       });
 
       if (userExist) {
-        return res.status(400).json({
-          error: 'Usuário já cadastrado',
-        });
+        const response = ApiResult.parseError(false, 'userAlreadyRegistered');
+        return res.status(ApiResult.CONFLICT).json(response);
       }
 
       if (type !== 1) {
-        return res.status(401).json({
-          error: 'Você não possui credenciais de administrador',
-        });
+        const response = ApiResult.parseError(false, 'userUnauth');
+        return res.status(ApiResult.UNAUTHORIZED).json(response);
       }
 
       const user = await User.create(req.body);
-
-      return res.status(201).json({
-        success: true,
-        user,
-      });
+      const response = ApiResult.parseResult(true, { user }, 'userStore');
+      return res.status(ApiResult.OK).json(response);
     } catch (error) {
-      return res.status(400).json({
-        success: false,
-        error,
-      });
+      const response = ApiResult.parseError(false, 'userStore', error.message);
+      return res.status(ApiResult.NOT_FOUND).json(response);
     }
   }
 
@@ -107,26 +93,26 @@ class UserController {
       const user = await User.findByPk(uid);
 
       if (email !== user.email) {
-        return res.status(401).json({
-          error: 'usuario não encontrado',
-        });
+        const response = ApiResult.parseError(false, 'incorrectUser');
+        return res.status(ApiResult.UNAUTHORIZED).json(response);
       }
 
       if (oldPassword && !(await user.checkPassword(oldPassword))) {
-        return res.status(401).json({
-          error: 'senha invalida',
-        });
+        const response = ApiResult.parseError(false, 'incorrectPassw');
+        return res.status(ApiResult.UNAUTHORIZED).json(response);
       }
 
       const { name } = await user.update(req.body);
-      return res.status(401).json({
-        user: { uid, name, email },
-      });
+
+      const response = ApiResult.parseResult(
+        true,
+        { user: { uid, name, email } },
+        'userUpdate'
+      );
+      return res.status(ApiResult.OK).json(response);
     } catch (error) {
-      return res.status(400).json({
-        success: false,
-        error,
-      });
+      const response = ApiResult.parseError(false, 'userUpdate', error.message);
+      return res.status(ApiResult.NOT_FOUND).json(response);
     }
   }
 }
