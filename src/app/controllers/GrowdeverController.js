@@ -2,7 +2,7 @@ import Growdever from '../models/Growdever';
 import ClassUser from '../models/ClassUser';
 import User from '../models/User';
 import Class from '../models/Class';
-import { where } from 'sequelize';
+import ApiResult from '../utils/ApiResult';
 
 class GrowdeverController {
   async index(req, res) {
@@ -29,15 +29,19 @@ class GrowdeverController {
           },
         ],
       });
-      return res.status(200).json({
-        success: true,
-        growdevers,
-      });
+      const response = ApiResult.parseResult(
+        true,
+        { growdevers },
+        'growdeverIndex'
+      );
+      return res.status(ApiResult.OK).json(response);
     } catch (error) {
-      return res.status(400).json({
-        success: false,
-        error,
-      });
+      const response = ApiResult.parseError(
+        false,
+        'growdeverIndex',
+        error.message
+      );
+      return res.status(ApiResult.NOT_FOUND).json(response);
     }
   }
 
@@ -68,28 +72,87 @@ class GrowdeverController {
       });
 
       if (!growdeverExists) {
-        throw 'Growdever não encontrado';
+        throw error;
       }
-      return res.status(200).json({
-        success: true,
-        growdeverExists,
-      });
+      const response = ApiResult.parseResult(
+        true,
+        { growdeverExists },
+        'growdeverShow'
+      );
+      return res.status(ApiResult.OK).json(response);
     } catch (error) {
-      return res.status(400).json({
-        success: false,
-        error,
+      const response = ApiResult.parseError(
+        false,
+        'growdeverShow',
+        error.message
+      );
+      return res.status(ApiResult.NOT_FOUND).json(response);
+    }
+  }
+
+  async store(req, res) {
+    const t = await Growdever.sequelize.transaction();
+    try {
+      const growdever = await Growdever.create(req.body, {
+        transaction: t,
       });
+
+      const { classes } = req.body;
+
+      await Promise.all(
+        classes.map(async (class_uid) => {
+          const newClassUser = await ClassUser.create(
+            {
+              growdever_uid: growdever.uid,
+              class_uid,
+            },
+            { transaction: t }
+          );
+          return newClassUser;
+        })
+      );
+
+      await t.commit();
+
+      const response = ApiResult.parseResult(
+        true,
+        { newClassUser },
+        'growdeverStore'
+      );
+      return res.status(ApiResult.OK).json(response);
+    } catch (error) {
+      await t.rollback();
+      const response = ApiResult.parseError(
+        false,
+        'growdeverStore',
+        error.message
+      );
+      return res.status(ApiResult.NOT_FOUND).json(response);
     }
   }
 
   // async store(req, res) {
   //   const t = await Growdever.sequelize.transaction();
   //   try {
+  //     // checkPlaces
+  //     // const { user_uid, classes } = req.body;
+  //     const { classes } = req.body;
+  //     const ClassData = await ClassUser.findByPk(classes);
+  //     // const a = ClassData.map() ;
+  //     // classes.map(async (class_uid) => {
+  //     //   await ClassUser.findOne({ where: { classes } });
+  //     //   return class_uid;
+  //     // });
+  //     // growdever.uid
+  //     if (1) {
+  //       throw `${growdever.uid}`;
+  //     }
+
   //     const growdever = await Growdever.create(req.body, {
   //       transaction: t,
   //     });
 
-  //     const { classes } = req.body;
+  //     // const { classes } = req.body;
 
   //     await Promise.all(
   //       classes.map(async (class_uid) => {
@@ -110,61 +173,12 @@ class GrowdeverController {
   //     });
   //   } catch (error) {
   //     await t.rollback();
-  //     return res.status(400).json({
+  //     return res.status(ApiResult.NOT_FOUND).json({
   //       success: false,
   //       error,
   //     });
   //   }
   // }
-
-  async store(req, res) {
-    const t = await Growdever.sequelize.transaction();
-    try {
-      // checkPlaces
-      // const { user_uid, classes } = req.body;
-      const { classes } = req.body;
-      const ClassData = await ClassUser.findByPk(classes);
-      // const a = ClassData.map() ;
-      // classes.map(async (class_uid) => {
-      //   await ClassUser.findOne({ where: { classes } });
-      //   return class_uid;
-      // });
-      // growdever.uid
-      if (1) {
-        throw `${growdever.uid}`;
-      }
-
-      const growdever = await Growdever.create(req.body, {
-        transaction: t,
-      });
-
-      // const { classes } = req.body;
-
-      await Promise.all(
-        classes.map(async (class_uid) => {
-          const newClassUser = await ClassUser.create(
-            {
-              growdever_uid: growdever.uid,
-              class_uid,
-            },
-            { transaction: t }
-          );
-          return newClassUser;
-        })
-      );
-
-      await t.commit();
-      return res.status(201).json({
-        success: true,
-      });
-    } catch (error) {
-      await t.rollback();
-      return res.status(400).json({
-        success: false,
-        error,
-      });
-    }
-  }
 
   async update(req, res) {
     try {
@@ -174,17 +188,21 @@ class GrowdeverController {
       });
 
       if (!updated) {
-        throw 'erro ao atualizar os dados';
+        throw error;
       }
-      return res.status(200).json({
-        success: true,
-        updated,
-      });
+      const response = ApiResult.parseResult(
+        true,
+        { updated },
+        'growdeverUpdate'
+      );
+      return res.status(ApiResult.OK).json(response);
     } catch (error) {
-      return res.status(400).json({
-        success: false,
-        error,
-      });
+      const response = ApiResult.parseError(
+        false,
+        'growdeverUpdate',
+        error.message
+      );
+      return res.status(ApiResult.NOT_FOUND).json(response);
     }
   }
 
@@ -196,17 +214,21 @@ class GrowdeverController {
       });
 
       if (!deleted) {
-        throw 'Growdever não encontrado';
+        throw error;
       }
-      return res.status(200).json({
-        success: true,
-        deleted,
-      });
+      const response = ApiResult.parseResult(
+        true,
+        { deleted },
+        'growdeverDelete'
+      );
+      return res.status(ApiResult.OK).json(response);
     } catch (error) {
-      return res.status(400).json({
-        success: false,
-        error,
-      });
+      const response = ApiResult.parseError(
+        false,
+        'growdeverDelete',
+        error.message
+      );
+      return res.status(ApiResult.NOT_FOUND).json(response);
     }
   }
 }

@@ -1,4 +1,5 @@
 import Class from '../models/Class';
+import ApiResult from '../utils/ApiResult';
 
 class ClassController {
   async index(req, res) {
@@ -6,15 +7,12 @@ class ClassController {
       const classes = await Class.findAll({
         attributes: ['uid', 'date', 'hour', 'status'],
       });
-      return res.status(200).json({
-        success: true,
-        classes,
-      });
+
+      const response = ApiResult.parseResult(true, { classes }, 'classIndex');
+      return res.status(ApiResult.OK).json(response);
     } catch (error) {
-      return res.status(400).json({
-        success: false,
-        error,
-      });
+      const response = ApiResult.parseError(false, 'classIndex', error.message);
+      return res.status(ApiResult.NOT_FOUND).json(response);
     }
   }
 
@@ -26,32 +24,28 @@ class ClassController {
       });
 
       if (!classExists) {
-        throw 'Aula não encontrada';
+        throw error;
       }
-      return res.status(200).json({
-        success: true,
-        classExists,
-      });
+      const response = ApiResult.parseResult(
+        true,
+        { classExists },
+        'classShow'
+      );
+      return res.status(ApiResult.OK).json(response);
     } catch (error) {
-      return res.status(400).json({
-        success: false,
-        error,
-      });
+      const response = ApiResult.parseError(false, 'classShow', error.message);
+      return res.status(ApiResult.NOT_FOUND).json(response);
     }
   }
 
   async store(req, res) {
     try {
       const newClass = await Class.create(req.body);
-      return res.status(201).json({
-        success: true,
-        newClass,
-      });
+      const response = ApiResult.parseResult(true, { newClass }, 'classStore');
+      return res.status(ApiResult.OK).json(response);
     } catch (error) {
-      return res.status(400).json({
-        success: false,
-        error,
-      });
+      const response = ApiResult.parseError(false, 'classStore', error.message);
+      return res.status(ApiResult.NOT_FOUND).json(response);
     }
   }
 
@@ -65,40 +59,39 @@ class ClassController {
       });
 
       if (!updated) {
-        throw 'erro ao atualizar os dados';
+        throw error;
       }
-      return res.status(200).json({
-        success: true,
-        updated,
-      });
+      const response = ApiResult.parseResult(true, { updated }, 'classUpdate');
+      return res.status(ApiResult.OK).json(response);
     } catch (error) {
-      return res.status(400).json({
-        success: false,
-        error,
-      });
+      const response = ApiResult.parseError(
+        false,
+        'classUpdate',
+        error.message
+      );
+      return res.status(ApiResult.NOT_FOUND).json(response);
     }
   }
 
   async delete(req, res) {
     try {
       const { uid } = req.params;
-
       const deleted = await Class.destroy({
         where: { uid },
       });
 
       if (!deleted) {
-        throw 'Aula não encontrada';
+        throw error;
       }
-      return res.status(200).json({
-        success: true,
-        deleted,
-      });
+      const response = ApiResult.parseResult(true, { deleted }, 'classDelete');
+      return res.status(ApiResult.OK).json(response);
     } catch (error) {
-      return res.status(400).json({
-        success: false,
-        error,
-      });
+      const response = ApiResult.parseError(
+        false,
+        'classDelete',
+        error.message
+      );
+      return res.status(ApiResult.NOT_FOUND).json(response);
     }
   }
 }
