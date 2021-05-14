@@ -105,6 +105,8 @@ cross-env NODE_ENV=test sequelize db:migrate:undo:all
 
 ## Features to be developed
 1. Unitary and integration tests with `Jest`
+2. Documentation with `Swagger`
+3. Deploy in the `Heroku`
 
 ## Author
 Created and maintained by [Diônatas Batista Lazzari](https://www.linkedin.com/in/dionatas-lazzari-dev/).
