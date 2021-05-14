@@ -3,43 +3,26 @@ import ApiResult from '../../utils/ApiResult';
 
 export default async (req, res, next) => {
   try {
-    // let msg = ApiResult.parseError(false, `${errorCode}`).message;  // TODO Refactor this
+    function errorMsg(msg) {
+      return ApiResult.parseError(false, `${msg}`).message;
+    }
+
     const schema = Yup.object().shape({
       name: Yup.string()
-        .required(ApiResult.parseError(false, 'validateRequiredName').message)
-        .min(
-          8,
-          ApiResult.parseError(false, 'validateMinCarachtersName').message
-        )
-        .max(
-          30,
-          ApiResult.parseError(false, 'validatMaxCarachtersName').message
-        ),
+        .required(errorMsg('validateRequiredName'))
+        .min(8, errorMsg('validateMinCarachtersName'))
+        .max(30, errorMsg('validatMaxCarachtersName')),
       email: Yup.string()
-        .required(ApiResult.parseError(false, 'validateRequiredEmail').message)
-        .email(ApiResult.parseError(false, 'validateValidEmail').message),
+        .required(errorMsg('validateRequiredEmail'))
+        .email(errorMsg('validateValidEmail')),
       phone: Yup.string()
-        .required(ApiResult.parseError(false, 'validateRequiredPhone').message)
-        .min(
-          9,
-          ApiResult.parseError(false, 'validateMinCarachtersPhone').message
-        )
-        .max(
-          15,
-          ApiResult.parseError(false, 'validateMaxCarachtersPhone').message
-        ),
+        .required(errorMsg('validateRequiredPhone'))
+        .min(9, errorMsg('validateMinCarachtersPhone'))
+        .max(15, errorMsg('validateMaxCarachtersPhone')),
       program: Yup.string()
-        .required(
-          ApiResult.parseError(false, 'validateRequiredProgram').message
-        )
-        .min(
-          6,
-          ApiResult.parseError(false, 'validateMinCarachtersProgram').message
-        )
-        .max(
-          15,
-          ApiResult.parseError(false, 'validateMaxCarachtersProgram').message
-        ),
+        .required(errorMsg('validateRequiredProgram'))
+        .min(6, errorMsg('validateMinCarachtersProgram'))
+        .max(15, errorMsg('validateMaxCarachtersProgram')),
     });
 
     await schema.validate(req.body);
