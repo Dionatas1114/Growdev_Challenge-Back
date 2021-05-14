@@ -89,21 +89,22 @@ cross-env NODE_ENV=test sequelize db:migrate:undo:all
 * [jsonwebtoken](https://www.npmjs.com/package/jsonwebtoken)
 * [pg](https://www.npmjs.com/package/pg)
 * [pg-hstore](https://www.npmjs.com/package/pg-hstore)
+* [yup](https://www.npmjs.com/package/yup)
 
 ## What I practiced on this API
 
 1.creation of the models with data and their respective types
-2.creation of the controllers with CRUD methods and http codes
+2.creation of the controllers with CRUD methods
 3.creation of the public and private routes
 4.creation of the migrations
 5.creation of the middleware (auth)
 6.configuration of the `Postgres` database and token (expire in)
 7.configuration of the `sqlite` to save the tests coverage
+8.creation of the http codes, success and error messages
+9.creation of the controller validation and their respective messages
 
 ## Features to be developed
-1. Utils and messages
-2. Validators with `Yup`
-3. Unitary and integration tests with `Jest`
+1. Unitary and integration tests with `Jest`
 
 ## Author
 Created and maintained by [Diônatas Batista Lazzari](https://www.linkedin.com/in/dionatas-lazzari-dev/).
