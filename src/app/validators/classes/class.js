@@ -3,17 +3,14 @@ import ApiResult from '../../utils/ApiResult';
 
 export default async (req, res, next) => {
   try {
-    // let msg = ApiResult.parseError(false, `${errorCode}`).message;  // TODO Refactor this
+    function errorMsg(msg) {
+      return ApiResult.parseError(false, `${msg}`).message;
+    }
+
     const schema = Yup.object().shape({
-      date: Yup.string().required(
-        ApiResult.parseError(false, 'validateRequiredDate').message
-      ),
-      hour: Yup.string().required(
-        ApiResult.parseError(false, 'validateRequiredHour').message
-      ),
-      status: Yup.boolean().required(
-        ApiResult.parseError(false, 'validateRequiredStatus').message
-      ),
+      date: Yup.string().required(errorMsg('validateRequiredDate')),
+      hour: Yup.string().required(errorMsg('validateRequiredHour')),
+      status: Yup.boolean().required(errorMsg('validateRequiredStatus')),
     });
 
     await schema.validate(req.body);
