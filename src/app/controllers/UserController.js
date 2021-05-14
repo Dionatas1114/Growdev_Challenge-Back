@@ -49,7 +49,7 @@ class UserController {
         return res.status(ApiResult.NOT_FOUND).json(response);
       }
 
-      const response = ApiResult.parseResult(true, { users }, 'userShow');
+      const response = ApiResult.parseResult(true, { user }, 'userShow');
       return res.status(ApiResult.OK).json(response);
     } catch (error) {
       const response = ApiResult.parseError(false, 'userShow', error.message);
