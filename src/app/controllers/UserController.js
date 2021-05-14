@@ -76,8 +76,12 @@ class UserController {
         return res.status(ApiResult.UNAUTHORIZED).json(response);
       }
 
-      const user = await User.create(req.body);
-      const response = ApiResult.parseResult(true, { user }, 'userStore');
+      const { uid, email } = await User.create(req.body);
+      const response = ApiResult.parseResult(
+        true,
+        { user: { uid, name, email, type } },
+        'userStore'
+      );
       return res.status(ApiResult.OK).json(response);
     } catch (error) {
       const response = ApiResult.parseError(false, 'userStore', error.message);
