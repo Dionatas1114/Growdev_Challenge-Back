@@ -1,6 +1,6 @@
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable('class_users', {
+    await queryInterface.createTable('class_growdevers', {
       growdever_uid: {
         allowNull: false,
         type: Sequelize.UUID,
@@ -35,6 +35,6 @@ module.exports = {
   },
 
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable('class_users');
+    await queryInterface.dropTable('class_growdevers');
   },
 };

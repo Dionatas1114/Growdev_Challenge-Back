@@ -42,18 +42,8 @@ class Growdever extends Model {
       }
     );
 
-    // this.addHook('beforeCreate', async (growdever) => {
-    //   if (condition) {
-    //     a;
-    //   }
-    // });
-
     return this;
   }
-  // check places available in classes
-  // checkPlaces(password) {
-  //   return bcrypt.compare(password, this.password_hash);
-  // }
 
   static associate(models) {
     this.belongsTo(models.User, {
@@ -61,7 +51,7 @@ class Growdever extends Model {
       foreignKey: 'user_uid',
     });
 
-    this.hasMany(models.ClassUser, {
+    this.hasMany(models.ClassGrowdever, {
       as: 'scheduled_class',
       foreignKey: 'growdever_uid',
     });

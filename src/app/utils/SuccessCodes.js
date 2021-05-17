@@ -1,10 +1,10 @@
 export default {
-  //AUTH CONTROLLER
+  //* ------------- AUTH CONTROLLER -------------- */
   loginSuccess: {
     code: 2000,
     message: 'Login realizado com sucesso',
   },
-  //USER CONTROLLER
+  //* ------------- USER CONTROLLER -------------- */
   userIndex: {
     code: 2001,
     message: 'Usuários encontrados com sucesso',
@@ -21,7 +21,7 @@ export default {
     code: 2004,
     message: 'Dados do usuário atualizados com sucesso',
   },
-  //CLASS CONTROLLER
+  //* ------------- CLASS CONTROLLER -------------- */
   classIndex: {
     code: 2010,
     message: 'Aulas encontradas com sucesso',
@@ -40,9 +40,9 @@ export default {
   },
   classDelete: {
     code: 2014,
-    message: 'Aula deletado com sucesso',
+    message: 'Aula deletada com sucesso',
   },
-  //GROWDEVER CONTROLLER
+  //* ------------- GROWDEVER CONTROLLER -------------- */
   growdeverIndex: {
     code: 2020,
     message: 'Alunos encontrados com sucesso',

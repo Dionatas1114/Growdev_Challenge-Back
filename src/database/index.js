@@ -5,9 +5,9 @@ import dataBaseConfig from '../config/database';
 import Class from '../app/models/Class';
 import User from '../app/models/User';
 import Growdever from '../app/models/Growdever';
-import ClassUser from '../app/models/ClassUser';
+import ClassGrowdever from '../app/models/ClassGrowdever';
 
-const models = [Class, User, Growdever, ClassUser];
+const models = [Class, User, Growdever, ClassGrowdever];
 class Database {
   constructor() {
     this.init();
@@ -22,7 +22,9 @@ class Database {
 
     models
       .map((model) => model.init(this.connection))
-      .map((model) => model.associate && model.associate(this.connection.models));
+      .map(
+        (model) => model.associate && model.associate(this.connection.models)
+      );
   }
 }
 

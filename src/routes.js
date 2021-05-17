@@ -26,23 +26,23 @@ routes.post('/users', validateUser, UserController.store);
 // ------ FROM HERE, PRIVATE ROUTES ------//
 routes.use(AuthMiddleware);
 
-// CLASS ROUTES (AUTH)
+// CLASS ROUTES (PRIVATE)
 routes.post('/classes', validateClass, ClassController.store);
 routes.get('/classes', ClassController.index);
 routes.get('/classes/:uid', ClassController.show);
-routes.put('/classes/:uid', ClassController.update);
+routes.put('/classes/:uid', validateClass, ClassController.update);
 routes.delete('/classes/:uid', ClassController.delete);
 
-// USER ROUTES (AUTH)
+// USER ROUTES (PRIVATE)
 routes.get('/users', UserController.index);
 routes.get('/users/:uid', UserController.show);
-routes.put('/users/:uid', UserController.update);
+routes.put('/users/:uid', validateUser, UserController.update);
 
-// GROWDEVER ROUTES (AUTH)
+// GROWDEVER ROUTES (PRIVATE)
 routes.post('/growdevers', validateGrowdever, GrowdeverController.store);
 routes.get('/growdevers', GrowdeverController.index);
 routes.get('/growdevers/:uid', GrowdeverController.show);
-routes.put('/growdevers/:uid', GrowdeverController.update);
+routes.put('/growdevers/:uid', validateGrowdever, GrowdeverController.update);
 routes.delete('/growdevers/:uid', GrowdeverController.delete);
 
 export default routes;
