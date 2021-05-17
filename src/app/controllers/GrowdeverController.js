@@ -1,5 +1,5 @@
 import Growdever from '../models/Growdever';
-import ClassUser from '../models/ClassUser';
+import ClassGrowdever from '../models/ClassGrowdever';
 import User from '../models/User';
 import Class from '../models/Class';
 import ApiResult from '../utils/ApiResult';
@@ -16,7 +16,7 @@ class GrowdeverController {
             attributes: ['uid', 'type'],
           },
           {
-            model: ClassUser,
+            model: ClassGrowdever,
             as: 'scheduled_class',
             attributes: ['class_uid'],
             include: [
@@ -29,6 +29,7 @@ class GrowdeverController {
           },
         ],
       });
+
       const response = ApiResult.parseResult(
         true,
         { growdevers },
@@ -57,7 +58,7 @@ class GrowdeverController {
             attributes: ['uid', 'type'],
           },
           {
-            model: ClassUser,
+            model: ClassGrowdever,
             as: 'scheduled_class',
             attributes: ['class_uid'],
             include: [
@@ -74,6 +75,7 @@ class GrowdeverController {
       if (!growdeverExists) {
         throw error;
       }
+
       const response = ApiResult.parseResult(
         true,
         { growdeverExists },
@@ -93,7 +95,7 @@ class GrowdeverController {
   async store(req, res) {
     const t = await Growdever.sequelize.transaction();
     try {
-      const growdever = await Growdever.create(req.body, {
+      const newGrowdever = await Growdever.create(req.body, {
         transaction: t,
       });
 
@@ -101,24 +103,26 @@ class GrowdeverController {
 
       await Promise.all(
         classes.map(async (class_uid) => {
-          const newClassUser = await ClassUser.create(
+          const newClassGrowdever = await ClassGrowdever.create(
             {
-              growdever_uid: growdever.uid,
+              growdever_uid: newGrowdever.uid,
               class_uid,
             },
             { transaction: t }
           );
-          return newClassUser;
+          return newClassGrowdever;
         })
       );
 
-      await t.commit();
-
       const response = ApiResult.parseResult(
         true,
-        { newClassUser },
+        {
+          newGrowdever,
+        },
         'growdeverStore'
       );
+
+      await t.commit();
       return res.status(ApiResult.OK).json(response);
     } catch (error) {
       await t.rollback();
@@ -130,55 +134,6 @@ class GrowdeverController {
       return res.status(ApiResult.NOT_FOUND).json(response);
     }
   }
-
-  // async store(req, res) {
-  //   const t = await Growdever.sequelize.transaction();
-  //   try {
-  //     // checkPlaces
-  //     // const { user_uid, classes } = req.body;
-  //     const { classes } = req.body;
-  //     const ClassData = await ClassUser.findByPk(classes);
-  //     // const a = ClassData.map() ;
-  //     // classes.map(async (class_uid) => {
-  //     //   await ClassUser.findOne({ where: { classes } });
-  //     //   return class_uid;
-  //     // });
-  //     // growdever.uid
-  //     if (1) {
-  //       throw `${growdever.uid}`;
-  //     }
-
-  //     const growdever = await Growdever.create(req.body, {
-  //       transaction: t,
-  //     });
-
-  //     // const { classes } = req.body;
-
-  //     await Promise.all(
-  //       classes.map(async (class_uid) => {
-  //         const newClassUser = await ClassUser.create(
-  //           {
-  //             growdever_uid: growdever.uid,
-  //             class_uid,
-  //           },
-  //           { transaction: t }
-  //         );
-  //         return newClassUser;
-  //       })
-  //     );
-
-  //     await t.commit();
-  //     return res.status(201).json({
-  //       success: true,
-  //     });
-  //   } catch (error) {
-  //     await t.rollback();
-  //     return res.status(ApiResult.NOT_FOUND).json({
-  //       success: false,
-  //       error,
-  //     });
-  //   }
-  // }
 
   async update(req, res) {
     try {
