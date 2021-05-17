@@ -1,5 +1,4 @@
 import Sequelize, { Model } from 'sequelize';
-import ClassUser from './ClassUser';
 
 class Class extends Model {
   static init(sequelize) {
@@ -32,7 +31,7 @@ class Class extends Model {
   }
 
   static associate(models) {
-    this.hasMany(models.ClassUser, {
+    this.hasMany(models.ClassGrowdever, {
       as: 'class',
       foreignKey: 'class_uid',
     });

@@ -33,7 +33,7 @@ class UserController {
   async show(req, res) {
     try {
       const { uid } = req.params;
-      const user = await User.findByPk(uid, {
+      const userExists = await User.findByPk(uid, {
         attributes: ['uid', 'name', 'type'],
         include: [
           {
@@ -44,12 +44,11 @@ class UserController {
         ],
       });
 
-      if (!user) {
-        const response = ApiResult.parseError(false, 'incorrectUser');
-        return res.status(ApiResult.NOT_FOUND).json(response);
+      if (!userExists) {
+        throw error;
       }
 
-      const response = ApiResult.parseResult(true, { users }, 'userShow');
+      const response = ApiResult.parseResult(true, { userExists }, 'userShow');
       return res.status(ApiResult.OK).json(response);
     } catch (error) {
       const response = ApiResult.parseError(false, 'userShow', error.message);
@@ -60,13 +59,13 @@ class UserController {
   async store(req, res) {
     try {
       const { name, type } = req.body;
-      const userExist = await User.findOne({
+      const userExists = await User.findOne({
         where: {
           name,
         },
       });
 
-      if (userExist) {
+      if (userExists) {
         const response = ApiResult.parseError(false, 'userAlreadyRegistered');
         return res.status(ApiResult.CONFLICT).json(response);
       }

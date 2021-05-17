@@ -40,8 +40,12 @@ class ClassController {
 
   async store(req, res) {
     try {
-      const newClass = await Class.create(req.body);
-      const response = ApiResult.parseResult(true, { newClass }, 'classStore');
+      const { uid, date, hour, status } = await Class.create(req.body);
+      const response = ApiResult.parseResult(
+        true,
+        { newClass: { uid, date, hour, status } },
+        'classStore'
+      );
       return res.status(ApiResult.OK).json(response);
     } catch (error) {
       const response = ApiResult.parseError(false, 'classStore', error.message);
