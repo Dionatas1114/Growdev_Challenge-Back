@@ -34,7 +34,6 @@ class ApiResult {
 
   static parseError(success, from, error = '') {
     const errorCode = errorCodes[from];
-
     return {
       success,
       message: errorCode.message,

@@ -1,12 +1,9 @@
 import * as Yup from 'yup';
 import ApiResult from '../../utils/ApiResult';
+import { errorMsg } from '../../utils/StructureMessages';
 
 export default async (req, res, next) => {
   try {
-    function errorMsg(msg) {
-      return ApiResult.parseError(false, `${msg}`).message;
-    }
-
     const schema = Yup.object().shape({
       name: Yup.string()
         .required(errorMsg('validateRequiredName'))
