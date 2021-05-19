@@ -1,6 +1,6 @@
 import * as Yup from 'yup';
-import ApiResult from '../../utils/ApiResult';
-import { errorMsg } from '../../utils/StructureMessages';
+import ApiResult from '../utils/ApiResult';
+import { errorMsg } from '../utils/StructureValidatorMessages';
 
 export default async (req, res, next) => {
   try {

@@ -58,7 +58,7 @@ export default {
   },
   classShow: {
     code: 1021,
-    message: 'Erro ao buscar uma aula',
+    message: 'Erro ao buscar uma aula pelo UID',
   },
   classStore: {
     code: 1022,
@@ -79,7 +79,7 @@ export default {
   },
   growdeverShow: {
     code: 1031,
-    message: 'Erro ao buscar um aluno',
+    message: 'Erro ao buscar um aluno pelo UID',
   },
   growdeverStore: {
     code: 1032,

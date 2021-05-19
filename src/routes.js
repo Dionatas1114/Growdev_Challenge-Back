@@ -6,9 +6,9 @@ import UserController from './app/controllers/UserController';
 import ClassController from './app/controllers/ClassController';
 import AuthController from './app/controllers/AuthController';
 
-import validateUser from './app/validators/users/user';
-import validateGrowdever from './app/validators/growdevers/growdever';
-import validateClass from './app/validators/classes/class';
+import validateUser from './app/validators/user';
+import validateGrowdever from './app/validators/growdever';
+import validateClass from './app/validators/class';
 
 import AuthMiddleware from './app/middlewares/auth';
 

@@ -8,11 +8,15 @@ class ClassController {
         attributes: ['uid', 'date', 'hour', 'status'],
       });
 
-      const response = ApiResult.parseResult(true, { classes }, 'classIndex');
+      const response = ApiResult.parseResult(
+        true,
+        { classes },
+        classes.length === 0 ? 'emptyClass' : 'classIndex'
+      );
       return res.status(ApiResult.OK).json(response);
     } catch (error) {
       const response = ApiResult.parseError(false, 'classIndex', error.message);
-      return res.status(ApiResult.NOT_FOUND).json(response);
+      return res.status(ApiResult.BAD_REQUEST).json(response);
     }
   }
 
@@ -34,22 +38,34 @@ class ClassController {
       return res.status(ApiResult.OK).json(response);
     } catch (error) {
       const response = ApiResult.parseError(false, 'classShow', error.message);
-      return res.status(ApiResult.NOT_FOUND).json(response);
+      return res.status(ApiResult.BAD_REQUEST).json(response);
     }
   }
 
   async store(req, res) {
     try {
-      const { uid, date, hour, status } = await Class.create(req.body);
-      const response = ApiResult.parseResult(
-        true,
-        { newClass: { uid, date, hour, status } },
-        'classStore'
-      );
-      return res.status(ApiResult.OK).json(response);
+      const { date, hour } = req.body;
+      const classAlreadyExists = await Class.findOne({
+        where: {
+          date,
+          hour,
+        },
+      });
+
+      if (!classAlreadyExists) {
+        const { uid, date, hour, status } = await Class.create(req.body);
+        const response = ApiResult.parseResult(
+          true,
+          { newClass: { uid, date, hour, status } },
+          'classStore'
+        );
+        return res.status(ApiResult.OK).json(response);
+      } else {
+        throw error;
+      }
     } catch (error) {
       const response = ApiResult.parseError(false, 'classStore', error.message);
-      return res.status(ApiResult.NOT_FOUND).json(response);
+      return res.status(ApiResult.BAD_REQUEST).json(response);
     }
   }
 
@@ -73,7 +89,7 @@ class ClassController {
         'classUpdate',
         error.message
       );
-      return res.status(ApiResult.NOT_FOUND).json(response);
+      return res.status(ApiResult.BAD_REQUEST).json(response);
     }
   }
 
@@ -95,7 +111,7 @@ class ClassController {
         'classDelete',
         error.message
       );
-      return res.status(ApiResult.NOT_FOUND).json(response);
+      return res.status(ApiResult.BAD_REQUEST).json(response);
     }
   }
 }

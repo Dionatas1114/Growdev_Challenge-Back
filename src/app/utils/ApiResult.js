@@ -14,6 +14,10 @@ class ApiResult {
     return 401;
   }
 
+  static get FORBIDDEN() {
+    return 403;
+  }
+
   static get NOT_FOUND() {
     return 404;
   }

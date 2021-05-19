@@ -27,9 +27,10 @@ class AuthController {
 
       const { uid, name, type } = user;
 
+      const response = ApiResult.parseResult(true, {}, 'loginSuccess');
       return res.status(ApiResult.OK).json({
         success: true,
-        message: 'Login realizado com sucesso', // TODO usar 'loginSuccess' de SuccessCodes
+        message: response.message,
         user: {
           uid,
           name,
@@ -42,7 +43,7 @@ class AuthController {
       });
     } catch (error) {
       const response = ApiResult.parseError(false, 'authLogin', error.message);
-      return res.status(ApiResult.NOT_FOUND).json(response);
+      return res.status(ApiResult.BAD_REQUEST).json(response);
     }
   }
 }

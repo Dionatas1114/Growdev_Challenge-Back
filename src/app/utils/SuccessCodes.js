@@ -21,6 +21,10 @@ export default {
     code: 2004,
     message: 'Dados do usuário atualizados com sucesso',
   },
+  emptyUser: {
+    code: 2005,
+    message: 'Nenhum usuário cadastrado',
+  },
   //* ------------- CLASS CONTROLLER -------------- */
   classIndex: {
     code: 2010,
@@ -42,6 +46,10 @@ export default {
     code: 2014,
     message: 'Aula deletada com sucesso',
   },
+  emptyClass: {
+    code: 2015,
+    message: 'Nenhuma aula cadastrada',
+  },
   //* ------------- GROWDEVER CONTROLLER -------------- */
   growdeverIndex: {
     code: 2020,
@@ -62,5 +70,9 @@ export default {
   growdeverDelete: {
     code: 2024,
     message: 'Dados do aluno deletados com sucesso',
+  },
+  emptyGrowdever: {
+    code: 2025,
+    message: 'Nenhum aluno cadastrado',
   },
 };

@@ -8,7 +8,7 @@ class UserController {
       const { type } = req.body;
       if (type !== 1) {
         const response = ApiResult.parseError(false, 'userUnauth');
-        return res.status(ApiResult.UNAUTHORIZED).json(response);
+        return res.status(ApiResult.FORBIDDEN).json(response);
       }
 
       const users = await User.findAll({
@@ -22,11 +22,15 @@ class UserController {
         ],
       });
 
-      const response = ApiResult.parseResult(true, { users }, 'userIndex');
+      const response = ApiResult.parseResult(
+        true,
+        { users },
+        users.length === 0 ? 'empytUser' : 'userIndex'
+      );
       return res.status(ApiResult.OK).json(response);
     } catch (error) {
       const response = ApiResult.parseError(false, 'userIndex', error.message);
-      return res.status(ApiResult.NOT_FOUND).json(response);
+      return res.status(ApiResult.BAD_REQUEST).json(response);
     }
   }
 
@@ -52,7 +56,7 @@ class UserController {
       return res.status(ApiResult.OK).json(response);
     } catch (error) {
       const response = ApiResult.parseError(false, 'userShow', error.message);
-      return res.status(ApiResult.NOT_FOUND).json(response);
+      return res.status(ApiResult.BAD_REQUEST).json(response);
     }
   }
 
@@ -72,7 +76,7 @@ class UserController {
 
       if (type !== 1) {
         const response = ApiResult.parseError(false, 'userUnauth');
-        return res.status(ApiResult.UNAUTHORIZED).json(response);
+        return res.status(ApiResult.FORBIDDEN).json(response);
       }
 
       const { uid, email } = await User.create(req.body);
@@ -84,7 +88,7 @@ class UserController {
       return res.status(ApiResult.OK).json(response);
     } catch (error) {
       const response = ApiResult.parseError(false, 'userStore', error.message);
-      return res.status(ApiResult.NOT_FOUND).json(response);
+      return res.status(ApiResult.BAD_REQUEST).json(response);
     }
   }
 
@@ -115,7 +119,7 @@ class UserController {
       return res.status(ApiResult.OK).json(response);
     } catch (error) {
       const response = ApiResult.parseError(false, 'userUpdate', error.message);
-      return res.status(ApiResult.NOT_FOUND).json(response);
+      return res.status(ApiResult.BAD_REQUEST).json(response);
     }
   }
 }

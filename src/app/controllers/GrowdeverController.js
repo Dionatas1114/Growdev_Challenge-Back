@@ -33,7 +33,7 @@ class GrowdeverController {
       const response = ApiResult.parseResult(
         true,
         { growdevers },
-        'growdeverIndex'
+        growdevers.length === 0 ? 'emptyGrowdever' : 'growdeverIndex'
       );
       return res.status(ApiResult.OK).json(response);
     } catch (error) {
@@ -42,7 +42,7 @@ class GrowdeverController {
         'growdeverIndex',
         error.message
       );
-      return res.status(ApiResult.NOT_FOUND).json(response);
+      return res.status(ApiResult.BAD_REQUEST).json(response);
     }
   }
 
@@ -88,13 +88,24 @@ class GrowdeverController {
         'growdeverShow',
         error.message
       );
-      return res.status(ApiResult.NOT_FOUND).json(response);
+      return res.status(ApiResult.BAD_REQUEST).json(response);
     }
   }
 
   async store(req, res) {
     const t = await Growdever.sequelize.transaction();
     try {
+      //TODO verify vacanciesClass to store
+      // const { classes } = req.body;
+      // await Promise.all(
+      //   classes.map(async (class_uid) => {
+      //     const vacanciesClass = await Class.findOne({
+      //       where: { uid: class_uid },
+      //     });
+      //     return res.status(ApiResult.OK).json(vacanciesClass);
+      //   })
+      // );
+
       const newGrowdever = await Growdever.create(req.body, {
         transaction: t,
       });
@@ -114,10 +125,11 @@ class GrowdeverController {
         })
       );
 
+      const { name, email, phone, program, user_uid } = newGrowdever;
       const response = ApiResult.parseResult(
         true,
         {
-          newGrowdever,
+          newGrowdever: { name, email, phone, program, user_uid },
         },
         'growdeverStore'
       );
@@ -131,7 +143,7 @@ class GrowdeverController {
         'growdeverStore',
         error.message
       );
-      return res.status(ApiResult.NOT_FOUND).json(response);
+      return res.status(ApiResult.BAD_REQUEST).json(response);
     }
   }
 
@@ -157,7 +169,7 @@ class GrowdeverController {
         'growdeverUpdate',
         error.message
       );
-      return res.status(ApiResult.NOT_FOUND).json(response);
+      return res.status(ApiResult.BAD_REQUEST).json(response);
     }
   }
 
@@ -183,7 +195,7 @@ class GrowdeverController {
         'growdeverDelete',
         error.message
       );
-      return res.status(ApiResult.NOT_FOUND).json(response);
+      return res.status(ApiResult.BAD_REQUEST).json(response);
     }
   }
 }
