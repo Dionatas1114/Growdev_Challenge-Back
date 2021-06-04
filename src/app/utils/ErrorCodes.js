@@ -25,11 +25,11 @@ export default {
   //* ------------- USER CONTROLLER -------------- */
   userIndex: {
     code: 1010,
-    message: 'Erro o buscar todos os usuários',
+    message: 'Erro ao buscar todos os usuários',
   },
   userShow: {
     code: 1011,
-    message: 'Erro o buscar usuário pelo UID',
+    message: 'Erro ao buscar usuário pelo UID',
   },
   userStore: {
     code: 1012,
