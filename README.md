@@ -26,7 +26,7 @@ This API is part of the Course Conclusion Work of the [Growdev Starter Program](
 
 ## How to use
 
-To test this API in a REST Client aplication,
+To test this API in a REST Client aplication, download the JSON file in the root of this repository or 
 [download the JSON file](https://www.dropbox.com/s/o50lmsy5bib5zbm/Desafio-FullStack.postman_collection.json?dl=0)
 and import.
 
