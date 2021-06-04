@@ -74,11 +74,6 @@ class UserController {
         return res.status(ApiResult.CONFLICT).json(response);
       }
 
-      if (type !== 1) {
-        const response = ApiResult.parseError(false, 'userUnauth');
-        return res.status(ApiResult.FORBIDDEN).json(response);
-      }
-
       const { uid, email } = await User.create(req.body);
       const response = ApiResult.parseResult(
         true,
