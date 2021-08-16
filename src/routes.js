@@ -21,7 +21,7 @@ routes.get('/', (req, res) => {
 
 // AUTH ROUTES (PUBLIC)
 routes.post('/login', AuthController.store);
-routes.post('/users', userValidator, UserController.store);
+routes.post('/users', UserController.store);
 routes.put('/users/:uid', userValidator, UserController.update);
 
 // ------ FROM HERE, PRIVATE ROUTES ------//
