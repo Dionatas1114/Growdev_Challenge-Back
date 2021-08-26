@@ -48,9 +48,7 @@ class UserController {
         ],
       });
 
-      if (!userExists) {
-        throw error;
-      }
+      if (!userExists) throw res;
 
       const response = ApiResult.parseResult(true, { userExists }, 'userShow');
       return res.status(ApiResult.OK).json(response);
@@ -62,19 +60,29 @@ class UserController {
 
   async store(req, res) {
     try {
-      const { name, type } = req.body;
-      const userExists = await User.findOne({
-        where: {
-          name,
-        },
-      });
+      const { uid, name, email, type } = req.body;
 
-      if (userExists) {
-        const response = ApiResult.parseError(false, 'userAlreadyRegistered');
+      const userExistsByName = await User.findOne({ where: { name } });
+      const userExistsByEmail = await User.findOne({ where: { email } });
+
+      if (userExistsByName) {
+        const response = ApiResult.parseError(
+          false,
+          'userNameAlreadyRegistered'
+        );
         return res.status(ApiResult.CONFLICT).json(response);
       }
 
-      const { uid, email } = await User.create(req.body);
+      if (userExistsByEmail) {
+        const response = ApiResult.parseError(
+          false,
+          'userEmailAlreadyRegistered'
+        );
+        return res.status(ApiResult.CONFLICT).json(response);
+      }
+
+      await User.create(req.body);
+
       const response = ApiResult.parseResult(
         true,
         { user: { uid, name, email, type } },
@@ -90,7 +98,7 @@ class UserController {
   async update(req, res) {
     try {
       const { uid } = req.params;
-      const { email, oldPassword } = req.body;
+      const { name, email, oldPassword } = req.body;
 
       const user = await User.findByPk(uid);
 
@@ -104,7 +112,7 @@ class UserController {
         return res.status(ApiResult.UNAUTHORIZED).json(response);
       }
 
-      const { name } = await user.update(req.body);
+      await user.update(req.body);
 
       const response = ApiResult.parseResult(
         true,
