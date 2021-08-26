@@ -39,16 +39,20 @@ export default {
     code: 1013,
     message: 'Erro ao atualizar dados do usuário',
   },
-  userAlreadyRegistered: {
+  userNameAlreadyRegistered: {
     code: 1014,
-    message: 'Usuário já cadastrado',
+    message: 'Já existe Usuário com esse nome',
+  },
+  userEmailAlreadyRegistered: {
+    code: 1015,
+    message: 'Já existe Usuário com esse email',
   },
   userUnauth: {
-    code: 1015,
+    code: 1016,
     message: 'Você não possui credenciais de administrador',
   },
   validateUser: {
-    code: 1016,
+    code: 1017,
     message: 'Erro ao validar dados do usuário',
   },
   //* ------------- CLASS CONTROLLER -------------- */
@@ -98,7 +102,7 @@ export default {
     message: 'Erro ao validar dados do aluno',
   },
   //* ------------- VALIDATORS MESSAGES -------------- */
-  //? ---------------- NAME MESSAGES ----------------- */
+  // ? ---------------- NAME MESSAGES ----------------- */
   validateRequiredName: {
     code: 1100,
     message: 'É preciso informar um nome',
@@ -111,7 +115,7 @@ export default {
     code: 1102,
     message: 'o nome não deve exceder 30 caracteres',
   },
-  //? ---------------- EMAIL MESSAGES ----------------- */
+  // ? ---------------- EMAIL MESSAGES ----------------- */
   validateRequiredEmail: {
     code: 1105,
     message: 'É preciso informar um e-mail',
@@ -120,7 +124,7 @@ export default {
     code: 1106,
     message: 'Informe um e-mail válido',
   },
-  //? ---------------- PASSW MESSAGES ----------------- */
+  // ? ---------------- PASSW MESSAGES ----------------- */
   validateRequiredPassw: {
     code: 1110,
     message: 'É preciso informar uma senha',
@@ -133,7 +137,7 @@ export default {
     code: 1112,
     message: 'a senha não deve exceder 8 caracteres',
   },
-  //? ---------------- PHONE MESSAGES ----------------- */
+  // ? ---------------- PHONE MESSAGES ----------------- */
   validateRequiredPhone: {
     code: 1115,
     message: 'É preciso informar um telefone',
@@ -146,7 +150,7 @@ export default {
     code: 1117,
     message: 'o telefone não deve exceder 15 caracteres',
   },
-  //? ---------------- PROGRAM MESSAGES ----------------- */
+  // ? ---------------- PROGRAM MESSAGES ----------------- */
   validateRequiredProgram: {
     code: 1120,
     message: 'É preciso informar um programa',
@@ -159,7 +163,7 @@ export default {
     code: 1122,
     message: 'o programa não deve exceder 15 caracteres',
   },
-  //? ---------------- OTHER MESSAGES ----------------- */
+  // ? ---------------- OTHER MESSAGES ----------------- */
   validateRequiredUserType: {
     code: 1125,
     message: 'Informe se você é administrador',
