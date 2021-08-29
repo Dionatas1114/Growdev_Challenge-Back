@@ -98,7 +98,8 @@ class UserController {
   async update(req, res) {
     try {
       const { uid } = req.params;
-      const { name, email, oldPassword } = req.body;
+      const { name, email, type, oldPassword } = req.body;
+      const userData = { name, email, type, oldPassword };
 
       const user = await User.findByPk(uid);
 
@@ -112,11 +113,11 @@ class UserController {
         return res.status(ApiResult.UNAUTHORIZED).json(response);
       }
 
-      await user.update(req.body);
+      await user.update(userData);
 
       const response = ApiResult.parseResult(
         true,
-        { user: { uid, name, email } },
+        { user: { name, email, oldPassword } },
         'userUpdate'
       );
       return res.status(ApiResult.OK).json(response);

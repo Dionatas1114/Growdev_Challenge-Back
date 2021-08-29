@@ -21,8 +21,7 @@ routes.get('/', (req, res) => {
 
 // AUTH ROUTES (PUBLIC)
 routes.post('/login', AuthController.store);
-routes.post('/users', UserController.store);
-routes.put('/users/:uid', userValidator, UserController.update);
+routes.post('/users', userValidator, UserController.store);
 
 // ------ FROM HERE, PRIVATE ROUTES ------//
 routes.use(AuthMiddleware);
@@ -37,6 +36,7 @@ routes.delete('/classes/:uid', ClassController.delete);
 // USER ROUTES (PRIVATE)
 routes.get('/users', UserController.index);
 routes.get('/users/:uid', UserController.show);
+routes.put('/users/:uid', userValidator, UserController.update);
 
 // GROWDEVER ROUTES (PRIVATE)
 routes.post('/growdevers', growdeverValidator, GrowdeverController.store);
