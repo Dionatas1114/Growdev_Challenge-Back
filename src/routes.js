@@ -19,7 +19,7 @@ routes.get('/', (req, res) => {
   res.json({ result: 'teste API' });
 });
 
-// AUTH ROUTES (PUBLIC)
+// PUBLIC ROUTES
 routes.post('/login', AuthController.store);
 routes.post('/users', userValidator, UserController.store);
 

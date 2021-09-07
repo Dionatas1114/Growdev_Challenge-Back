@@ -5,7 +5,7 @@ class ClassController {
   async index(req, res) {
     try {
       const classes = await Class.findAll({
-        attributes: ['uid', 'date', 'hour', 'status'],
+        attributes: ['uid', 'name', 'date', 'hour', 'status'],
       });
 
       const response = ApiResult.parseResult(
@@ -24,11 +24,11 @@ class ClassController {
     try {
       const { uid } = req.params;
       const classExists = await Class.findByPk(uid, {
-        attributes: ['uid', 'date', 'hour', 'status'],
+        attributes: ['uid', 'name', 'date', 'hour', 'status'],
       });
 
       if (!classExists) {
-        throw error;
+        throw classExists;
       }
       const response = ApiResult.parseResult(
         true,
@@ -53,16 +53,15 @@ class ClassController {
       });
 
       if (!classAlreadyExists) {
-        const { uid, date, hour, status } = await Class.create(req.body);
+        const { uid, name, date, hour, status } = await Class.create(req.body);
         const response = ApiResult.parseResult(
           true,
           { newClass: { uid, date, hour, status } },
           'classStore'
         );
         return res.status(ApiResult.OK).json(response);
-      } else {
-        throw error;
       }
+      throw classAlreadyExists;
     } catch (error) {
       const response = ApiResult.parseError(false, 'classStore', error.message);
       return res.status(ApiResult.BAD_REQUEST).json(response);
@@ -79,7 +78,7 @@ class ClassController {
       });
 
       if (!updated) {
-        throw error;
+        throw updated;
       }
       const response = ApiResult.parseResult(true, { updated }, 'classUpdate');
       return res.status(ApiResult.OK).json(response);
@@ -101,7 +100,7 @@ class ClassController {
       });
 
       if (!deleted) {
-        throw error;
+        throw deleted;
       }
       const response = ApiResult.parseResult(true, { deleted }, 'classDelete');
       return res.status(ApiResult.OK).json(response);

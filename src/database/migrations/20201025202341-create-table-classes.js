@@ -6,6 +6,10 @@ module.exports = {
         type: Sequelize.UUID,
         primaryKey: true,
       },
+      name: {
+        allowNull: false,
+        type: Sequelize.STRING,
+      },
       date: {
         allowNull: false,
         type: Sequelize.STRING,
