@@ -10,6 +10,10 @@ class Class extends Model {
           defaultValue: Sequelize.UUIDV4,
           primaryKey: true,
         },
+        name: {
+          allowNull: false,
+          type: Sequelize.STRING,
+        },
         date: {
           allowNull: false,
           type: Sequelize.STRING,
